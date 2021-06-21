@@ -1,0 +1,29 @@
+name: Rust
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+
+    runs-on: ubuntu-18.04
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+    - name: Build
+      run: cargo build --verbose --release
+    - name: Archive production artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: proxy_linux
+        path: |
+            target/release/proxy
